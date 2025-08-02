@@ -1,19 +1,19 @@
 // Package bookstore provides types and functions for managing a collection of books.
 package bookstore
 
-
+// Book represents information about a book.
 type Book struct {
-	ID     int
 	Title  string
 	Author string
 	Copies int
+	ID     int
 }
 
-func GetBook(catalog []Book, id int) Book {
+func GetBook(catalog []Book, ID int) Book {
 	for _, b := range catalog {
-		if b.ID == id {
+		if b.ID == ID {
 			return b
 		}
 	}
-	return Book{} // default value if not found
+	return Book{}
 }
