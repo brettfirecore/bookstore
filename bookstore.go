@@ -1,17 +1,17 @@
 package bookstore
 
-import "errors"
-
 type Book struct {
+	ID     int
 	Title  string
 	Author string
 	Copies int
 }
 
-func Buy(b Book) (Book, error) {
-	if b.Copies == 0 {
-		return Book{}, errors.New("no copies left") // ❌ This line will be untested
+func GetBook(catalog []Book, id int) Book {
+	for _, b := range catalog {
+		if b.ID == id {
+			return b
+		}
 	}
-	b.Copies--
-	return b, nil
+	return Book{} // default value if not found
 }
