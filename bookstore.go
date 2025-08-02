@@ -1,4 +1,6 @@
+// Package bookstore provides types and functions for managing a collection of books.
 package bookstore
+
 
 type Book struct {
 	ID     int
