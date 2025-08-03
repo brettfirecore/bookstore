@@ -9,11 +9,6 @@ type Book struct {
 	ID     int
 }
 
-func GetBook(catalog []Book, ID int) Book {
-	for _, b := range catalog {
-		if b.ID == ID {
-			return b
-		}
-	}
-	return Book{}
+func GetBook(catalog map[int]Book, ID int) Book {
+	return catalog[ID]
 }
