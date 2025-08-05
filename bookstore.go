@@ -1,4 +1,4 @@
-// oink
+// Package bookstore oink is the name of a pig
 package bookstore
 
 type Book struct {
@@ -8,8 +8,12 @@ type Book struct {
 	Copies int
 }
 
-// Broken on purpose: returns a map instead of a slice
 func GetAllBooks(catalog map[int]Book) []Book {
-	return catalog // ❌ compile-time type error: map[int]Book ≠ []Book
-}
+	result := []Book{}
 
+	for _, b := range catalog {
+		result = append(result, b)
+	}
+
+	return result
+}
