@@ -1,20 +1,15 @@
 // oink
 package bookstore
 
-import "fmt"
-
-// Book represents information about a book.
 type Book struct {
+	ID     int
 	Title  string
 	Author string
 	Copies int
-	ID     int
 }
 
-func GetBook(catalog map[int]Book, ID int) (Book, error) {
-	b, ok := catalog[ID]
-	if !ok {
-		return Book{}, fmt.Errorf("ID %d doesn't exist", ID)
-	}
-	return b, nil
+// Broken on purpose: returns a map instead of a slice
+func GetAllBooks(catalog map[int]Book) []Book {
+	return catalog // ❌ compile-time type error: map[int]Book ≠ []Book
 }
+
