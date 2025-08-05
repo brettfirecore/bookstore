@@ -1,5 +1,7 @@
-// Package bookstore provides types and functions for managing a collection of books.
+// oink
 package bookstore
+
+import "fmt"
 
 // Book represents information about a book.
 type Book struct {
@@ -9,6 +11,10 @@ type Book struct {
 	ID     int
 }
 
-func GetBook(catalog map[int]Book, ID int) Book {
-	return catalog[ID]
+func GetBook(catalog map[int]Book, ID int) (Book, error) {
+	b, ok := catalog[ID]
+	if !ok {
+		return Book{}, fmt.Errorf("ID %d doesn't exist", ID)
+	}
+	return b, nil
 }
