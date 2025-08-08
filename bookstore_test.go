@@ -1,35 +1,43 @@
 // bookstore_test is the external test package for the bookstore module.
 // Using `package bookstore_test` means we’re testing the public API of the bookstore package,
 // just like any code outside the module would — this is called “black-box” testing.
-package bookstore_test // (Listing 17.3)
+// bookstore_test.go
+package bookstore_test
 
 import (
-	"testing" // Go’s standard library testing package
+	"sort"
+	"testing"
 
-	"github.com/brettfirecore/bookstore"
+	"github.com/brettfirecore/bookstore" // import the package under test
+	"github.com/google/go-cmp/cmp"
 )
 
-// TestNetPriceCents verifies that NetPriceCents correctly calculates the final price
-// after applying a percentage discount.
-func TestNetPriceCents(t *testing.T) {
-	t.Parallel() // Allows this test to run in parallel with others, speeding up test execution.
+func TestGetAllBooks(t *testing.T) {
+	t.Parallel()
 
-	// Arrange: create a Book with a known price and discount
-	b := bookstore.Book{
-		Title:           "For the love of Go", // title is just metadata
-		PriceCents:      4000,                 // base price = 4000 cents = $40.00
-		DiscountPercent: 25,                   // 25% discount
+	// NEW: use the named type `Catalog` instead of a raw map[int]Book.
+	// A Catalog literal looks like a map literal, because Catalog’s underlying type is a map.
+	catalog := bookstore.Catalog{
+		1: {ID: 1, Title: "For the Love of Go"},
+		2: {ID: 2, Title: "The Power of Go: Tools"},
 	}
 
-	// Expectation: 25% of 4000 = 1000 → 4000 - 1000 = 3000
-	want := 3000 // this is the value we expect after discount is applied
+	// Expected slice of books. (Order doesn’t matter; we’ll sort `got` before comparing.)
+	want := []bookstore.Book{
+		{ID: 1, Title: "For the Love of Go"},
+		{ID: 2, Title: "The Power of Go: Tools"},
+	}
 
-	// Act: call the function under test
-	got := b.NetPriceCents()
+	// NEW: call the *method* on the catalog value instead of a free function.
+	got := catalog.GetAllBooks()
 
-	// Assert: check if the result is what we expected
-	if want != got {
-		// If not, fail the test and print the difference
-		t.Errorf("want %d, got %d", want, got)
+	// Map iteration order is undefined, so sort by ID to make comparison deterministic.
+	sort.Slice(got, func(i, j int) bool {
+		return got[i].ID < got[j].ID
+	})
+
+	// Compare the two slices; print a diff if they differ.
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
 	}
 }

@@ -2,23 +2,35 @@
 // This is the top-level package declaration. Every Go file must begin with a `package` line.
 package bookstore
 
-// Book represents a book with a price and optional discount.
-// It's a struct — a custom data type made of named fields.
+// Book represents a single book in the catalog.
+// It contains an ID, title, price in cents, and an optional discount percentage.
 type Book struct {
-	Title           string // The title of the book (e.g., "For the Love of Go")
+	Title           string // The book's title
 	Author          string //
 	Copies          int    //
-	PriceCents      int    // The price in cents (e.g., 4000 = $40.00)
-	DiscountPercent int    // The discount percentage (e.g., 25 = 25% off)
+	ID              int    // Unique identifier for the book
+	PriceCents      int    // Price stored as cents to avoid floating-point issues
+	DiscountPercent int    // Discount percentage (0–100)
 }
 
-// NetPriceCents returns the book's price after applying the discount.
-// It takes a Book as input and returns an int (final price in cents).
-func (b Book) NetPriceCents() int {
-	// Compute the amount of money to subtract as a discount
-	// Multiply first to avoid integer division errors (like 25/100 = 0)
-	saving := b.PriceCents * b.DiscountPercent / 100
+// Catalog is a custom type that represents the bookstore's inventory.
+// Internally, it's a map where the key is the book's ID and the value is the Book struct.
+// We use a custom type instead of map[int]Book directly so we can add methods to it.
+type Catalog map[int]Book
 
-	// Subtract the discount from the original price to get the net price
-	return b.PriceCents - saving
+// GetAllBooks is a method on the Catalog type that returns a slice of all books in the catalog.
+func (c Catalog) GetAllBooks() []Book {
+	// Create a slice with an initial capacity equal to the catalog size.
+	// This avoids unnecessary allocations when appending.
+	books := make([]Book, 0, len(c))
+
+	// Loop through the map values (books) in the catalog.
+	for _, b := range c {
+		// Append each book to the slice.
+		books = append(books, b)
+	}
+
+	// Return the complete slice of books.
+	// The order will be random because Go maps are unordered.
+	return books
 }
