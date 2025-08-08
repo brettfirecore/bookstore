@@ -4,7 +4,7 @@
 package bookstore_test // (Listing 17.3)
 
 import (
-	"testing"    // Go’s standard library testing package
+	"testing" // Go’s standard library testing package
 
 	"github.com/brettfirecore/bookstore"
 )
@@ -25,7 +25,7 @@ func TestNetPriceCents(t *testing.T) {
 	want := 3000 // this is the value we expect after discount is applied
 
 	// Act: call the function under test
-	got := bookstore.NetPriceCents(b)
+	got := b.NetPriceCents()
 
 	// Assert: check if the result is what we expected
 	if want != got {
