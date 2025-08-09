@@ -13,24 +13,17 @@ type Book struct {
 	DiscountPercent int    // Discount percentage (0–100)
 }
 
-// Catalog is a custom type that represents the bookstore's inventory.
-// Internally, it's a map where the key is the book's ID and the value is the Book struct.
-// We use a custom type instead of map[int]Book directly so we can add methods to it.
 type Catalog map[int]Book
 
-// GetAllBooks is a method on the Catalog type that returns a slice of all books in the catalog.
 func (c Catalog) GetAllBooks() []Book {
-	// Create a slice with an initial capacity equal to the catalog size.
-	// This avoids unnecessary allocations when appending.
 	books := make([]Book, 0, len(c))
-
-	// Loop through the map values (books) in the catalog.
 	for _, b := range c {
-		// Append each book to the slice.
 		books = append(books, b)
 	}
-
-	// Return the complete slice of books.
-	// The order will be random because Go maps are unordered.
 	return books
+}
+
+func (c Catalog) GetBook(id int) (Book, bool) {
+	b, ok := c[id]
+	return b, ok
 }
