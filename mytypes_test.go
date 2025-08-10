@@ -1,38 +1,19 @@
-// bookstore_test is the external test package for the bookstore module.
+// ftl-code/20.1/mytypes_test.go in bookstore is the external test package for the bookstore module.
 
 package bookstore
 
 import (
-	"strings"
 	"testing"
 )
 
-func TestStringsBuilder(t *testing.T) {
+func TestStringUppercaser(t *testing.T) {
 	t.Parallel()
 
-	var sb strings.Builder
-	sb.WriteString("Hello, ")
-	sb.WriteString("Gophers!")
+	var su StringUppercaser
+	su.Contents.WriteString("Hello, Gophers!")
+	want := "HELLO, GOPHERS!"
 
-	want := "Hello, Gophers!"
-	got := sb.String()
-	if want != got {
-		t.Errorf("want %q, got %q", want, got)
-	}
-
-	wantLen := 15
-	gotLen := sb.Len()
-	if wantLen != gotLen {
-		t.Errorf("%q: want len %d, got %d", sb.String(), wantLen, gotLen)
-	}
-}
-
-func TestMyBuilderHello(t *testing.T) {
-	t.Parallel()
-
-	var mb MyBuilder
-	want := "Hello, Gophers!"
-	got := mb.Hello()
+	got := su.ToUpper()
 	if want != got {
 		t.Errorf("want %q, got %q", want, got)
 	}

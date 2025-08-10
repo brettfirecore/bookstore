@@ -1,10 +1,13 @@
 // Package bookstore defines types and functions related to managing a collection of books.
 package bookstore
 
-// MyBuilder is a custom type for experimenting
-type MyBuilder struct{}
+import "strings"
 
-// Hello returns a fixed greeting.
-func (MyBuilder) Hello() string {
-	return "Hello, Gophers!"
+// StringUppercaser wraps strings.Builder.
+type StringUppercaser struct {
+	Contents strings.Builder
+}
+
+func (su StringUppercaser) ToUpper() string {
+	return strings.ToUpper(su.Contents.String())
 }
