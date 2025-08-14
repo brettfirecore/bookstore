@@ -7,16 +7,12 @@ import "testing"
 func TestDouble(t *testing.T) {
 	t.Parallel()
 
-	x := 12
+	var x int = 12
 	want := 24
 
-	got := Double(x)
-	if got != want {
-		t.Errorf("Double(%d) = %d; want %d", x, got, want)
-	}
+	Double(x)
 
-	// x is unchanged because Go passes by valoe
-	if x != 12 {
-		t.Errorf("x was mutated: got %d; wan 12", x)
+	if want != x {
+		t.Errorf("want %d, want %d", want, x)
 	}
 }

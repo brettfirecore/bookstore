@@ -3,6 +3,6 @@
 package bookstore
 
 // Double returns x multiplied by 2 (does not mutate the caller's variable).
-func Double(x int) int {
-	return x * 2
+func Double(input int) {
+	input *= 2
 }
