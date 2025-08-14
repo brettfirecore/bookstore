@@ -1,18 +1,22 @@
-// ftl-code/20.1/mytypes_test.go in bookstore is the external test package for the bookstore module.
+// ftl-code / 21.1 mytypes_test.go in bookstore is TestDouble.
 
 package bookstore
 
 import "testing"
 
-func TestStringUppercaser(t *testing.T) {
+func TestDouble(t *testing.T) {
 	t.Parallel()
 
-	var su StringUppercaser
-	su.Contents.WriteString("Hello, Gophers!")
-	want := "HELLO, GOPHERS!"
+	x := 12
+	want := 24
 
-	got := su.ToUpper()
-	if want != got {
-		t.Errorf("want %q, got %q", want, got)
+	got := Double(x)
+	if got != want {
+		t.Errorf("Double(%d) = %d; want %d", x, got, want)
+	}
+
+	// x is unchanged because Go passes by valoe
+	if x != 12 {
+		t.Errorf("x was mutated: got %d; wan 12", x)
 	}
 }
