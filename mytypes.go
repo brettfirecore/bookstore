@@ -1,4 +1,5 @@
 // Package bookstore defines types and functions related to managing a collection of books.
+// ftl-20.3
 package bookstore
 
 import "strings"
@@ -10,4 +11,4 @@ type StringUppercaser struct {
 
 func (su StringUppercaser) ToUpper() string {
 	return strings.ToUpper(su.Contents.String())
-}
+} 

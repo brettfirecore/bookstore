@@ -2,9 +2,7 @@
 
 package bookstore
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestStringUppercaser(t *testing.T) {
 	t.Parallel()
