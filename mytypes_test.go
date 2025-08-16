@@ -10,7 +10,11 @@ import (
 
 func TestDouble(t *testing.T) {
 	t.Parallel()
-
-	x := 12
-	mytypes.Double(&x) // <- passing *int to a func that expects int
+	x := mytypes.MyInt(12)
+	want := mytypes.MyInt(24)
+	p := &x
+	p.Double()
+	if want != x {
+		t.Errorf("want %d, got %d", want, x)
+	}
 }

@@ -2,8 +2,9 @@
 // ftl-21.2
 package bookstore
 
-// NOTE: takes int (not *int) on purpose.
-func Double(input *int) {
-	// no-op; body doesn't matter for the error
+type MyInt int
+
+func (input *MyInt) Double() {
+
 	*input *= 2
 }
