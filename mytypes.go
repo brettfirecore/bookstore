@@ -1,8 +1,9 @@
 // Package bookstore defines types and functions related to managing a collection of books.
-// ftl-21.1
+// ftl-21.2
 package bookstore
 
-// Double returns x multiplied by 2 (does not mutate the caller's variable).
-func Double(input int) {
-	input *= 2
+// NOTE: takes int (not *int) on purpose.
+func Double(input *int) {
+	// no-op; body doesn't matter for the error
+	*input *= 2
 }

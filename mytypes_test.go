@@ -1,18 +1,16 @@
-// ftl-code / 21.1 mytypes_test.go in bookstore is TestDouble.
+// ftl-code / 21.2 mytypes_test.go in bookstore is TestDouble.
 
-package bookstore
+package bookstore_test
 
-import "testing"
+import (
+	"testing"
+
+	mytypes "github.com/brettfirecore/bookstore"
+)
 
 func TestDouble(t *testing.T) {
 	t.Parallel()
 
-	var x int = 12
-	want := 24
-
-	Double(x)
-
-	if want != x {
-		t.Errorf("want %d, want %d", want, x)
-	}
+	x := 12
+	mytypes.Double(&x) // <- passing *int to a func that expects int
 }
