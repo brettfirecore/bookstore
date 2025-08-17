@@ -21,6 +21,6 @@ func TestSetPriceCents(t *testing.T) {
 	}
 	got := b.PriceCents
 	if want != got {
-		t.Errorf("want updated price %d, got %d", want, got)
+		t.Errorf("want updated price %d, got %d", want, got	)
 	}
 }
