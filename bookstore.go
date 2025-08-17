@@ -2,8 +2,6 @@
 // ftl-21.2
 package bookstore
 
-//import "fmt"
-
 type Book struct {
 	Title           string
 	Author          string
