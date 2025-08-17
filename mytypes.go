@@ -2,9 +2,18 @@
 // ftl-21.2
 package bookstore
 
-type MyInt int
+//import "fmt"
 
-func (input *MyInt) Double() {
+type Book struct {
+	Title           string
+	Author          string
+	Copies          int
+	ID              int
+	PriceCents      int
+	DiscountPercent int
+}
 
-	*input *= 2
+func (b *Book) SetPriceCents(price int) error {
+	b.PriceCents = price // nope
+	return nil
 }
