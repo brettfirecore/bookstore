@@ -4,6 +4,18 @@ package bookstore
 
 import "fmt"
 
+const (
+	CategoryAutobiography     = "Autobiography"
+	CategoryLargePrintRomance = "Large Print Romance"
+	CategoryParticlePhysics   = "Particle Physics"
+)
+
+var validCategory = map[string]bool{
+	"Autobiography":       true,
+	"Large Print Romance": true,
+	"Particle Physics":    true,
+}
+
 type Book struct {
 	Title           string
 	Author          string
