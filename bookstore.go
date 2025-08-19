@@ -4,16 +4,18 @@ package bookstore
 
 import "fmt"
 
+type Category int
+
 const (
-	CategoryAutobiography     = "Autobiography"
-	CategoryLargePrintRomance = "Large Print Romance"
-	CategoryParticlePhysics   = "Particle Physics"
+	CategoryAutobiography Category = iota
+	CategoryLargePrintRomance
+	CategoryParticlePhysics
 )
 
-var validCategory = map[string]bool{
-	"Autobiography":       true,
-	"Large Print Romance": true,
-	"Particle Physics":    true,
+var validCategory = map[Category]bool{
+	CategoryAutobiography:     true,
+	CategoryLargePrintRomance: true,
+	CategoryParticlePhysics:   true,
 }
 
 type Book struct {
@@ -23,17 +25,17 @@ type Book struct {
 	ID              int
 	PriceCents      int
 	DiscountPercent int
-	category        string
+	category        Category
 }
 
-func (b *Book) SetCategory(category string) error {
-	if category != "Autobiography" {
-		return fmt.Errorf("unknown category %q", category)
+func (b *Book) SetCategory(category Category) error {
+	if !validCategory[category] {
+		return fmt.Errorf("unknown category %v", category)
 	}
 	b.category = category
 	return nil
 }
 
-func (b Book) Category() string {
+func (b Book) Category() Category {
 	return b.category
 }
