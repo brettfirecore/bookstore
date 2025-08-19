@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/brettfirecore/bookstore"
-	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestSetCategory(t *testing.T) {
