@@ -14,12 +14,12 @@ func TestSetCategory(t *testing.T) {
 	b := bookstore.Book{
 		Title: "For the Love of Go",
 	}
-	cats := []bookstore.Category{
+	cat := []bookstore.Category{
 		bookstore.CategoryAutobiography,
 		bookstore.CategoryLargePrintRomance,
 		bookstore.CategoryParticlePhysics,
 	}
-	for _, cat := range cats {
+	for _, cat := range cat {
 		err := b.SetCategory(cat)
 		if err != nil {
 			t.Fatal(err)
