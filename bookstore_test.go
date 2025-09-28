@@ -3,7 +3,7 @@ package bookstore_test
 import (
 	"testing"
 
-	"bookstore"
+	"github.com/brettfirecore/bookstore"
 )
 
 func TestBookFields(t *testing.T) {
