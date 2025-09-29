@@ -1,53 +1,94 @@
 // Declare that this file belongs to the "bookstore_test" package.
-// This convention keeps the tests in a separate package from the code under test,
-// so the tests can only access the public API of the bookstore package (just like a user would).
+// Keeping tests in a separate *_test package means they can only use the
+// public API of the bookstore package (just like external users would).
 package bookstore_test
 
 import (
-	"testing" // The testing package provides the tools to write and run tests.
+	"testing" // Provides T (testing.T) and helpers like t.Run/t.Parallel/t.Fatal.
 
-	// Import the code we want to test. We use its module path so the test can call its exported names.
-	"github.com/brettfirecore/bookstore"
+	// Import the package under test by its module path so we can use exported names:
+	//   bookstore.Book, bookstore.Buy, etc.
+	bookstore "github.com/brettfirecore/bookstore"
 )
 
-// TestBook checks that we can create a Book value without errors.
-// It doesn’t actually assert anything yet; it’s just making sure the struct compiles and can be used.
+// TestBook verifies we can construct a public Book value.
+// It’s a lightweight “does this public type compile and instantiate” check.
 func TestBook(t *testing.T) {
-	t.Parallel() // Allow this test to run in parallel with others.
+	t.Parallel() // Allow this test to run alongside others to speed up the suite.
 
-	// Create a Book value with some fields set.
-	// Using the blank identifier (_) so the variable is not used — we just ensure we can construct it.
+	// Construct a Book. Assigning to the blank identifier (_) avoids an “unused variable” error.
+	// This test doesn’t need to read the value; it just ensures the type is usable.
 	_ = bookstore.Book{
-		Title:  "For the Love of Go", // Title field set
-		Author: "John Arundel",       // Author field set
-		Copies: 2,                    // Copies field set
+		Title:  "Spark Joy",  // Example title
+		Author: "Marie Kondō", // Example author (note: public/exported field)
+		Copies: 2,            // Arbitrary example inventory
 	}
 }
 
-// TestBuy describes the behaviour we want: buying a book should reduce the Copies by one.
+// TestBuy checks the happy path: with available stock, Buy should decrement Copies by one
+// and return no error.
 func TestBuy(t *testing.T) {
-	t.Parallel() // Allow this test to run in parallel with others.
+	t.Parallel() // Safe because this test doesn’t touch shared state.
 
-	// Set up our starting Book with 2 copies available.
+	// Arrange: start with two copies so one purchase is valid.
 	b := bookstore.Book{
-		Title:  "For the Love of Go",
-		Author: "John Arundel",
+		Title:  "Spark Joy",
+		Author: "Marie Kondō",
 		Copies: 2,
 	}
 
-	// Define the expected result after buying one copy.
+	// We expect the returned Book to have one fewer copy.
 	want := 1
 
-	// Call the (not yet implemented) Buy function.
-	// This should return a Book with one fewer copy.
-	result := bookstore.Buy(b)
+	// Act: call Buy. It returns an updated Book plus an error.
+	result, err := bookstore.Buy(b)
+	if err != nil {
+		// Fatal stops this test immediately; no point comparing values if Buy failed.
+		t.Fatal(err)
+	}
 
-	// Access the Copies field of the returned Book.
+	// Extract the field we’re asserting on (clearer failure messages).
 	got := result.Copies
 
-	// Check if the result matches what we wanted.
-	// If not, fail the test and print a clear message showing both values.
+	// Assert: one copy was decremented.
 	if want != got {
 		t.Errorf("want %d, got %d", want, got)
 	}
+
+	// (Optional defensive check — uncomment to verify pass-by-value behavior:)
+	// The input 'b' should remain unchanged because Buy takes/returns values, not pointers.
+	// if b.Copies != 2 {
+	// 	t.Errorf("original Book mutated: want Copies=2, got %d", b.Copies)
+	// }
+}
+
+// TestBuyErrorsIfNoCopiesLeft ensures the error branch executes when stock is zero.
+// This increases coverage and protects behavior for the “sold out” case.
+func TestBuyErrorsIfNoCopiesLeft(t *testing.T) {
+	t.Parallel()
+
+	// Arrange: zero stock should cause Buy to fail.
+	b := bookstore.Book{
+		Title:  "Spark Joy",
+		Author: "Marie Kondō",
+		Copies: 0,
+	}
+
+	// Act: attempt to buy with no stock.
+	_, err := bookstore.Buy(b)
+
+	// Assert: we expect a non-nil error.
+	if err == nil {
+		t.Error("want error buying from zero copies, got nil")
+	}
+
+	// (Optional enhancement — if the package exposes a sentinel error like ErrNoCopies,
+	// you can assert precisely using errors.Is. Example:
+	//
+	//   _, err := bookstore.Buy(b)
+	//   if !errors.Is(err, bookstore.ErrNoCopies) {
+	//       t.Fatalf("want ErrNoCopies, got %v", err)
+	//   }
+	//
+	// This helps catch error-message changes while preserving behavior.)
 }
