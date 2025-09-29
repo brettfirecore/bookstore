@@ -1,0 +1,31 @@
+# --- Go build outputs ---
+/buydemo              # binary from: go build -o buydemo ./cmd/buydemo
+*.exe
+*.dll
+*.so
+*.dylib
+*.test                # from: go test -c
+*.out                 # e.g., coverage/profile outputs
+*.log
+
+# --- Go coverage ---
+coverage.out
+
+# --- Build directories (if you use them) ---
+/bin/
+/dist/
+/build/
+
+# --- Editor/IDE metadata ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+
+# --- Editor swap/backup files ---
+*~
+*.swp
+*.swo
