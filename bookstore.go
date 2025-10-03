@@ -46,13 +46,6 @@ type Book struct {
 //     catalog element and does not mutate the caller’s slice.
 //   • If duplicate IDs exist (they shouldn’t), the first match wins.
 // The underscore (_) means "ignore this value" (INDEX)
-func GetBook(catalog []Book, id int) Book {
-	for _, b := range catalog { // visit each book in order (index is irrelevant here)
-		if b.ID == id { // is this the one we’re looking for?
-			return b // found: return a copy of this element
-		}
-	}
-	// Not found: return the zero value. Callers can compare against (Book{}) to
-	// detect this case if they need to. (Alternatively, switch to (Book, bool).)
-	return Book{}
+func GetBook(catalog map[int]Book, ID int) Book {
+	return catalog[ID]
 }

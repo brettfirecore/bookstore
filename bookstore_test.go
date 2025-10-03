@@ -26,27 +26,31 @@ func TestGetBook(t *testing.T) {
 
 	// Arrange: build a tiny in-memory catalog. Using a slice literal keeps the
 	// “world setup” close to the test. Each Book has a unique ID so we can look it up.
-	catalog := []bookstore.Book{
-		{ID: 1, Title: "For the Love of Go"},
-		{ID: 2, Title: "The Power of Go: Tools"},
+	catalog := map[int]bookstore.Book{
+		1: {ID: 1, Title: "For the Love of Go"},
+		2: {ID: 2, Title: "The Power of Go: Tools"},
 	}
-
+	catalog[2] = bookstore.Book{ID: 2, Title: "The Power of Go: Tools (2nd ed.)"}
 	// We expect the *second* book to be returned when we ask for ID=2. Picking
 	// the second element (rather than the first) ensures the test would fail if the
 	// implementation incorrectly returned catalog[0] for every request.
-	want := bookstore.Book{ID: 2, Title: "The Power of Go: Tools"}
+
 
 	// Act: call the function under test. The API returns a single Book value; if the
 	// ID didn’t exist, we’d get the zero value (Book{}). Here, ID=2 *does* exist.
-	got := bookstore.GetBook(catalog, 2)
+    got := bookstore.GetBook(catalog, 2)
+
+    want := bookstore.Book{ID: 2, Title: "The Power of Go: Tools (2nd ed.)"}
+    if diff := cmp.Diff(want, got); diff != "" {
+        t.Fatalf("mismatch (-want +got):\n%s", diff)
+    }
+}
 
 	// Assert: compare the structs. We prefer cmp.Equal + cmp.Diff because it
 	// produces a focused, line-by-line diff on failure (much nicer than printing
 	// whole structs). If the values differ, - lines are the expected (want) value,
 	// and + lines are the actual (got) value.
-	if !cmp.Equal(want, got) {
+
 		// t.Error marks the test as failed but continues; t.Fatalf would stop immediately.
 		// Either is fine here—Error is used so the diff shows in output without aborting the test file.
-		t.Error(cmp.Diff(want, got))
-	}
-}
+		
