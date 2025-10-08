@@ -27,3 +27,14 @@ func TestGetBook(t *testing.T) {
 		t.Error(cmp.Diff(want, got))
 	}
 }
+
+func TestGetBookBadIDReturnsError(t *testing.T) {
+	t.Parallel()
+
+	catalog := map[int]bookstore.Book{}
+
+	_, err := bookstore.GetBook(catalog, 999)
+
+	if err == nil {
+		t.Fatal("want error for non-existent ID, got nil")
+	}
