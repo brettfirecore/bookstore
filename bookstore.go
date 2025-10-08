@@ -10,13 +10,10 @@ type Book struct {
 	ID     int    // Unique identifier used for lookups (e.g., 1, 2, 42)
 }
 
-func GetBook(catalog map[int]Book, ID int) Book {
-	return catalog[ID]
-}
-
-func main() {
-	catalog := map[int]Book{
-		1: {ID: 1, Title: "For the Love of Go"},
+func GetBook(catalog map[int]Book, ID int) (Book, error) {
+	b, ok := catalog[ID]
+	if !ok {
+		return Book{}, fmt.Errorf("ID &d doessn't exist", ID)
 	}
-	fmt.Println(catalog[1].Title) // prints: For the Love of Go
+	return b, nil
 }
