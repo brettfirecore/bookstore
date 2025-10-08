@@ -14,12 +14,15 @@ func TestGetBook(t *testing.T) {
 	catalog := map[int]bookstore.Book{
 		1: {ID: 1, Title: "For the Love of Go"},
 		2: {ID: 2, Title: "The Power of Go: Tools"},
-		3: {ID: 3, Title: "Old title"},
 	}
-	catalog[3] = bookstore.Book{ID: 3, Title: "Spark Joy"}
+	got, err := bookstore.GetBook(catalog, 2)
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	want := bookstore.Book{ID: 2, Title: "The Power of Go: Tools"}
-	got := bookstore.GetBook(catalog, 2)
+	
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
 	}
