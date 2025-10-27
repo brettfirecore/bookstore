@@ -1,30 +1,34 @@
-// Package bookstore stores info about a book in a folder Bookstore.go
+// Package bookstore defines a Book type and methods for setting and getting book information.
+// This file lives in the 'bookstore' folder and contains logic related to a single Book.
 package bookstore
 
-// Book stores info about a book. We keep prices in *cents* (integers)
-// so we never run into floating-point rounding problems (e.g., 0.1+0.2 issues).
+import "fmt" // Import the fmt package for formatted error messages.
+
+// Book represents information about a single book in the store.
 type Book struct {
-	Title           string // The book’s title
-	Author          string // The author’s name
-	Copies          int    // Copies in stock
-	ID              int    // Unique ID for lookups
-	PriceCents      int    // Price in cents (e.g., $12.34 -> 1234)
-	DiscountPercent int    // Discount as a whole number percent (0..100)
+	Title    string // Title is exported (public) so it can be accessed outside the package.
+	Author   string // Author is exported (public) for the same reason.
+	category string // category is unexported (private) and only accessible within this package.
+	// PriceCents int // commented out for now; could store price in cents.
 }
 
-// NetPriceCents is a *method* on Book.
-// The bit in front of the name — (b Book) — is called the *receiver*.
-// Think of it like a hidden first parameter named "b" that holds the Book
-// we’re calling the method on. Because it’s a *value receiver*, we get a copy
-// of the Book and we DON’T change the original.
-//
-// Example call site:
-//
-//	b := Book{PriceCents: 2000, DiscountPercent: 25}
-//	n := b.NetPriceCents()  // n == 1500
-func (b Book) NetPriceCents() int {
-	// Math, all in integers (cents), so it’s precise:
-	//   net = price * (100 - discount) / 100
-	// Note: integer division truncates toward zero (no rounding up).
-	return b.PriceCents * (100 - b.DiscountPercent) / 100
+// SetCategory validates and assigns a category to the book.
+// Because it modifies the receiver, it uses a *pointer receiver (*Book).
+func (b *Book) SetCategory(category string) error {
+	// If the given category is not "Autobiography", return an error.
+	if category != "Autobiography" {
+		return fmt.Errorf("unknown category %q", category)
+	}
+
+	// Otherwise, set the category field on the actual book.
+	b.category = category
+
+	// Return nil to indicate success (no error).
+	return nil
+}
+
+// Category returns the current category of the book.
+// This uses a value receiver because it only *reads* data, not modifies it.
+func (b Book) Category() string {
+	return b.category // Return the book's category string.
 }
